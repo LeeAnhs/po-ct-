@@ -6,7 +6,12 @@
 }
 body {
     display: flex;
-    height: 100vh;
+    height: fit-content;
+}
+.chart-container {
+    height: 300px; 
+    margin: auto;
+    position: relative;
 }
 .sidebar {
     width: 250px;

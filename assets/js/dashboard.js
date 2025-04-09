@@ -40,6 +40,77 @@ document.addEventListener('DOMContentLoaded', function() {
             default: return 'Unknown';
         }
     }
+    function loadStatistics() {
+        const schedules =
+            JSON.parse(localStorage.getItem("schedules")) || [];
+        let gymCount = 0,
+            yogaCount = 0,
+            zumbaCount = 0;
+        schedules.forEach((s) => {
+            switch (s.classId) {
+                case 1:
+                    gymCount++;
+                    break;
+                case 3:
+                    yogaCount++;
+                    break;
+                case 2:
+                    zumbaCount++;
+                    break;
+            }
+        });
+
+        document.querySelector(
+            ".stat-box:nth-child(1) strong"
+        ).textContent = gymCount;
+        document.querySelector(
+            ".stat-box:nth-child(2) strong"
+        ).textContent = yogaCount;
+        document.querySelector(
+            ".stat-box:nth-child(3) strong"
+        ).textContent = zumbaCount;
+
+        new Chart(
+            document.getElementById("classChart").getContext("2d"),
+            {
+                type: "bar",
+                data: {
+                    labels: ["Gym", "Yoga", "Zumba"],
+                    datasets: [
+                        {
+                            label: "Số lượng lịch tập",
+                            data: [gymCount, yogaCount, zumbaCount],
+                            backgroundColor: [
+                                "#3498db",
+                                "#2ecc71",
+                                "#e74c3c",
+                            ],
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                            },
+                        },
+                    },
+                    barPercentage: 0.7, 
+                    categoryPercentage: 0.8,
+                },
+            }
+        );
+    }
+    window.onload = loadStatistics;
+    
 
     function renderScheduleTable(schedules) {
         tableBody.innerHTML = '';
